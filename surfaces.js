@@ -1,4 +1,4 @@
-//import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r112/build/three.module.js';
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r112/build/three.module.js';
 //import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r112//examples/jsm/controls/OrbitControls.js';
 
 function raiseGeom(geom, func) {
