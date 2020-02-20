@@ -57,7 +57,7 @@ function main() {
 	//planeGeom.center();
 	planeGeom.computeVertexNormals();
 	*/
-	raiseGeom(planeGeom, makeHyperParaFunc(0.5,0.5,0,1));
+	raiseGeom(planeGeom, makeHyperParaFunc(2,2,0,1));
 	
 	var hyperbolicParaboloidSurface = new THREE.Mesh(planeGeom, new THREE.MeshNormalMaterial({
 	  side: THREE.DoubleSide

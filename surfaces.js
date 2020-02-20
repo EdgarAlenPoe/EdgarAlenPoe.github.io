@@ -14,9 +14,15 @@ function raiseGeom(geom, func) {
 	return geom;
 }
 
-function makeHyperbolicParaboloidFunc(a, b, xShift, zShift) {
-	function hyperPara(x,y) {
-		return (((v.x * v.x) + xShift) * a) - (((v.z * v.z) + zShift) * b);
+function makeHyperParaFunc(a, b, xShift, zShift) {
+	function hyperPara(x,z) {
+		return (((x * x) + xShift) / a) - (((z * z) + zShift) / b);
 	}
 	return hyperPara;
+}
+
+function makeParaSheet(xa, xb, za, k) {
+	function paraSheet(x,z) {
+		xa * (x * x) + (xb * x) - (za * z) + k;
+	}
 }
