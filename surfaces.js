@@ -1,7 +1,7 @@
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r112/build/three.module.js';
 //import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r112//examples/jsm/controls/OrbitControls.js';
 
-function raiseGeom(geom, func) {
+export function raiseGeom(geom, func) {
 	var v = new THREE.Vector3();
 	var positions = geom.attributes.position;
 
@@ -14,7 +14,7 @@ function raiseGeom(geom, func) {
 	return geom;
 }
 
-function makeHyperParaFunc(a, b, xShift, zShift) {
+export function makeHyperParaFunc(a, b, xShift, zShift) {
 	function hyperPara(x,z) {
 		return (((x * x) + xShift) / a) - (((z * z) + zShift) / b);
 	}
