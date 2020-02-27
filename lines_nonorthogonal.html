@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	//<script type="module" src="surfaces.js"></script>
+
+</head>
+<body>
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/102/three.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+	-->
+
+	<canvas id="c" width="700" height="700"></canvas>
+
+</body>
+<script type="module">
+//import * as THREE from '../../../Downloads/three.js-master/build/three.module.js';
+//import * as THREE from './build/three.module.js';
+//import { OrbitControls } from './examples/jsm/controls/OrbitControls.js';
+
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r112/build/three.module.js';
+import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r112//examples/jsm/controls/OrbitControls.js';
+import * as surface from './surfaces.js';
+
+
+function main() {
+	const canvas = document.querySelector('#c');
+	const renderer = new THREE.WebGLRenderer({canvas});
+
+	const material = new THREE.MeshPhongMaterial({color: 0x44aa88});
+
+	var scene = new THREE.Scene();
+	var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+	camera.position.set(20, 0, 20);
+	/*var renderer = new THREE.WebGLRenderer({
+	  antialias: true
+	});
+	renderer.setSize(window.innerWidth, window.innerHeight);
+	document.body.appendChild(renderer.domElement);*/
+	
+	var controls = new OrbitControls(camera, renderer.domElement);
+	
+	var planeGeom = new THREE.PlaneBufferGeometry(10, 10, 20, 20);
+	planeGeom.rotateX(-Math.PI * 0.5);
+/*	var v = new THREE.Vector3();
+	var positions = planeGeom.attributes.position;
+
+	for (var i = 0; i < positions.count; i++) {
+	  v.fromBufferAttribute(positions, i);
+	  positions.setY(i, ((v.x * v.x) - (v.z * v.z) + 1) * 0.5);
+	}
+	//planeGeom.rotateY(-Math.PI * 0.25);
+	//planeGeom.rotateX(-Math.PI * 0.25);
+
+	//planeGeom.center();
+	planeGeom.computeVertexNormals();
+	*/
+	//surface.raiseGeom(planeGeom, surface.makeHyperParaFunc(Math.sqrt(1/2),Math.sqrt(1/2),1));
+	surface.raiseGeom(planeGeom, function (x,z) {return ((1/4)*(x**2)) + ((-1/2)*(x*z)) + ((-1/4)*(z**2)) +(1/2)});
+	
+	var hyperbolicParaboloidSurface = new THREE.Mesh(planeGeom, new THREE.MeshNormalMaterial({
+	  side: THREE.DoubleSide
+	}));
+	hyperbolicParaboloidSurface.position.x = 0;
+	scene.add(hyperbolicParaboloidSurface);
+
+	var planeGeom2 = new THREE.PlaneBufferGeometry(200, 200, 200, 200);
+	planeGeom2.rotateX(-Math.PI * 0.5);
+
+	surface.raiseGeom(planeGeom2, surface.makeHyperParaFunc(0,1,1));
+	
+	var hyperbolicParaboloidSurface2 = new THREE.Mesh(planeGeom2, new THREE.MeshNormalMaterial({
+	  side: THREE.DoubleSide
+	}));
+	hyperbolicParaboloidSurface2.position.x = 0;
+	//scene.add(hyperbolicParaboloidSurface2);
+
+/*
+	var planeGeom2 = new THREE.PlaneBufferGeometry(6, 4, 20, 20);
+	planeGeom2.rotateX(-Math.PI * 0.5);
+	planeGeom2.translate(0,0,6);
+	var v2 = new THREE.Vector3();
+	var positions2 = planeGeom2.attributes.position;
+
+	for (var i = 0; i < positions2.count; i++) {
+	  v2.fromBufferAttribute(positions2, i);
+	  positions2.setY(i, ((v2.x * v2.x))/2 - (4* v2.z) + (17/2));
+	}
+	//planeGeom2.rotateY(-Math.PI * 0.25);
+	//planeGeom.rotateX(-Math.PI * 0.25);
+
+	//planeGeom2.center();
+	planeGeom2.computeVertexNormals();
+	
+	var paraboloicSheetSurface = new THREE.Mesh(planeGeom2, new THREE.MeshNormalMaterial({
+	  side: THREE.DoubleSide
+	}));
+	paraboloicSheetSurface.position.x = 0;
+	scene.add(paraboloicSheetSurface );
+
+	var planeGeom3 = new THREE.PlaneBufferGeometry(6, 4, 20, 20);
+	planeGeom3.rotateX(-Math.PI * 0.5);
+	planeGeom3.translate(0,0,-6);
+	var v3 = new THREE.Vector3();
+	var positions3 = planeGeom3.attributes.position;
+
+	for (var i = 0; i < positions3.count; i++) {
+	  v3.fromBufferAttribute(positions3, i);
+	  positions3.setY(i, ((v3.x * v3.x))/2 + (4*v3.z) + (17/2));
+	}
+	//planeGeom3.rotateY(-Math.PI * 0.25);
+	//planeGeom.rotateX(-Math.PI * 0.25);
+
+	//planeGeom2.center();
+	planeGeom3.computeVertexNormals();
+	
+	var paraboloicSheet2Surface = new THREE.Mesh(planeGeom3, new THREE.MeshNormalMaterial({
+	  side: THREE.DoubleSide
+	}));
+	paraboloicSheet2Surface.position.x = 0;
+	scene.add(paraboloicSheet2Surface );
+	
+	//var boxHelper = new THREE.BoxHelper(ellipticParaboloidSurface, "yellow");
+	//scene.add(boxHelper);
+	*/
+
+
+	var material3 = new THREE.LineBasicMaterial( { color: 0x0000ff } );
+	var points = [];
+	points.push( new THREE.Vector3( -200, 0, 0 ) );
+	points.push( new THREE.Vector3( 0, 0, 0 ) );
+	points.push( new THREE.Vector3( 200, 0, 0 ) );
+
+	var points2 = [];
+	points2.push( new THREE.Vector3( -200, 1, -200 ) );
+	points2.push( new THREE.Vector3( 0, 1, 0 ) );
+	points2.push( new THREE.Vector3( 200, 1, 200 ) );
+
+	var line1Geometry = new THREE.BufferGeometry().setFromPoints( points );
+	var line2Geometry = new THREE.BufferGeometry().setFromPoints( points2 );
+
+	var line = new THREE.Line( line1Geometry, material3 );
+	var line2 = new THREE.Line( line2Geometry, material3 );
+
+	scene.add( line );
+	scene.add( line2 );
+	
+	
+	renderer.setAnimationLoop(() => {
+	  controls.update();
+	  renderer.render(scene, camera);
+	})
+	}
+
+
+main();
+
+</script>
+</html>
