@@ -7,16 +7,19 @@ export function raiseGeom(geom, func) {
 
 	for (var i = 0; i < positions.count; i++) {
 	  v.fromBufferAttribute(positions, i);
-	  positions.setY(i, ((v.x * v.x) - (v.z * v.z) + 1) * 0.5);
+	  positions.setY(i, func(v.x,v.z));
 	}
 	geom.computeVertexNormals();
 
 	return geom;
 }
 
-export function makeHyperParaFunc(a, b, xShift, zShift) {
+export function makeHyperParaFunc(a, b, c) {
+	var xCoef = a**4 + (a**2 * b**2) - 2*(a**2) + 1;
+	var xzCoef = 2*((a**3) * b) + 2*(a * (b**3)) - 2*(a*b);
+	var zCoef = b**4 + (a**2 * b**2) - 2*(b**2);
 	function hyperPara(x,z) {
-		return (((x * x) + xShift) / a) - (((z * z) + zShift) / b);
+		return (xCoef*(x * x)/(2*c)) + (xzCoef * x * z / (2*c)) + (zCoef*(z * z) / (2*c)) + (c/2);
 	}
 	return hyperPara;
 }
