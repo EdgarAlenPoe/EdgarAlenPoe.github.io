@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	//<script type="module" src="surfaces.js"></script>
+
+</head>
+<body>
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/102/three.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+	-->
+
+	<canvas id="c" width="700" height="700"></canvas>
+
+</body>
+<script type="module">
+//import * as THREE from '../../../Downloads/three.js-master/build/three.module.js';
+//import * as THREE from './build/three.module.js';
+//import { OrbitControls } from './examples/jsm/controls/OrbitControls.js';
+
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r112/build/three.module.js';
+import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r112//examples/jsm/controls/OrbitControls.js';
+import * as surface from './surfaces.js';
+
+
+function main() {
+	const canvas = document.querySelector('#c');
+	const renderer = new THREE.WebGLRenderer({canvas});
+
+	const material = new THREE.MeshPhongMaterial({color: 0x44aa88});
+
+	var scene = new THREE.Scene();
+	var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+	camera.position.set(20, 0, 20);
+	
+	var controls = new OrbitControls(camera, renderer.domElement);
+	
+	var planeGeom = new THREE.PlaneBufferGeometry(4, 4, 20, 20);
+	planeGeom.rotateX(-Math.PI * 0.5);
+
+	surface.raiseGeom(planeGeom, surface.makeHyperParaFunc(0,1,1));
+	planeGeom.computeVertexNormals();
+	
+	var hyperbolicParaboloidSurface = new THREE.Mesh(planeGeom, new THREE.MeshNormalMaterial({
+	  side: THREE.DoubleSide
+	}));
+	hyperbolicParaboloidSurface.position.x = 0;
+	scene.add(hyperbolicParaboloidSurface);
+
+
+	var pos_zGeom = new THREE.PlaneBufferGeometry(4, 4, 20, 20);
+	pos_zGeom.rotateX(-Math.PI * 0.5);
+	pos_zGeom.translate(0,0,4);
+
+	surface.raiseGeom(pos_zGeom, surface.makeParaSheet(1,0,0,-4,2,5));
+
+	pos_zGeom.computeVertexNormals();
+	
+	var paraboloicSheetSurface = new THREE.Mesh(pos_zGeom, new THREE.MeshNormalMaterial({
+	  side: THREE.DoubleSide
+	}));
+	//paraboloicSheetSurface.position.x = 0;
+	scene.add(paraboloicSheetSurface );
+
+	var pos_xzGeom = new THREE.PlaneBufferGeometry(4, 4, 20, 20);
+	pos_xzGeom.rotateX(-Math.PI * 0.5);
+	pos_xzGeom.translate(4,0,4);
+
+	surface.raiseGeom(pos_xzGeom, surface.makePlane(-4, -2, 4, -1));
+
+	pos_xzGeom.computeVertexNormals();
+	
+	var paraboloicSheet2Surface = new THREE.Mesh(pos_xzGeom, new THREE.MeshNormalMaterial({
+	  side: THREE.DoubleSide
+	}));
+	paraboloicSheet2Surface.position.x = 0;
+	scene.add(paraboloicSheet2Surface );
+
+	var pos_xGeom = new THREE.PlaneBufferGeometry(4, 4, 20, 20);
+	pos_xGeom.rotateX(-Math.PI * 0.5);
+	pos_xGeom.translate(4,0,0);
+
+	surface.raiseGeom(pos_xGeom, surface.makeParaSheet(0,-4,1,0,-2,3));
+
+	pos_xGeom.computeVertexNormals();
+	
+	var paraboloicSheetSurface2 = new THREE.Mesh(pos_xGeom, new THREE.MeshNormalMaterial({
+	  side: THREE.DoubleSide
+	}));
+	//paraboloicSheetSurface2.position.x = 0;
+	scene.add(paraboloicSheetSurface2 );
+	
+
+
+	var material3 = new THREE.LineBasicMaterial( { color: 0x0000ff } );
+	var points = [];
+	points.push( new THREE.Vector3( -2, 0, 0 ) );
+	points.push( new THREE.Vector3( 0, 0, 0 ) );
+	points.push( new THREE.Vector3( 2, 0, 0 ) );
+
+	var points2 = [];
+	points2.push( new THREE.Vector3( 0, 1, -2 ) );
+	points2.push( new THREE.Vector3( 0, 1, 0 ) );
+	points2.push( new THREE.Vector3( 0, 1, 2 ) );
+
+	var line1Geometry = new THREE.BufferGeometry().setFromPoints( points );
+	var line2Geometry = new THREE.BufferGeometry().setFromPoints( points2 );
+
+	var line = new THREE.Line( line1Geometry, material3 );
+	var line2 = new THREE.Line( line2Geometry, material3 );
+
+	scene.add( line );
+	scene.add( line2 );
+	
+	
+	renderer.setAnimationLoop(() => {
+	  controls.update();
+	  renderer.render(scene, camera);
+	})
+	}
+
+
+main();
+
+</script>
+</html>

@@ -24,8 +24,16 @@ export function makeHyperParaFunc(a, b, c) {
 	return hyperPara;
 }
 
-function makeParaSheet(xa, xb, za, k) {
+export function makeParaSheet(xa, xb, za, zb, yb, k) {
 	function paraSheet(x,z) {
-		xa * (x * x) + (xb * x) - (za * z) + k;
+		return ((xa * (x * x)) + (xb * x) + (za * (z * z)) + (zb * z) + k) / yb;
 	}
+	return paraSheet;
+}
+
+export function makePlane(vx, vy, vz, c) {
+	function plane(x,z) {
+		return ((vx * x) + (vz *z) + c) / vy;
+	}
+	return plane;
 }
